@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>title</key>
+    <string>MyBias</string>
+    <key>entry</key>
+    <dict>
+      <key>cell</key>
+      <string>PSLinkCell</string>
+      <key>icon</key>
+      <string>MB.png</string>
+      <key>label</key>
+      <string>MyBias</string>
+    </dict>
+    <key>items</key>
+    <array>
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Focus Rect Panning</string>
+        <key>footerText</key>
+    	<string>Allow dragging user focus crop rect.</string>
+      </dict>
+       <dict>
+        	<key>cell</key>
+        	<string>PSSwitchCell</string>
+        	<key>default</key>
+        	<false/>
+        	<key>defaults</key>
+        	<string>com.apple.camera</string>
+        	<key>key</key>
+        	<string>CAMFocusRectPanning</string>
+        	<key>label</key>
+        	<string>Enabled</string>
+      </dict>
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Focus Rect Dismiss</string>
+        <key>footerText</key>
+        <string>Allow dismissing user focus crop rect. The "x" button added.</string>
+      </dict>
+      <dict>
+        	<key>cell</key>
+        	<string>PSSwitchCell</string>
+        	<key>default</key>
+        	<false/>
+        	<key>defaults</key>
+        	<string>com.apple.camera</string>
+        	<key>key</key>
+        	<string>CAMShowDismissFocusAttachment</string>
+        	<key>label</key>
+        	<string>Enabled</string>
+      </dict>
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Focus Rect Lock</string>
+        <key>footerText</key>
+        <string>Allow locking focus from user focus crop rect. The "U" or "L" button added.</string>
+      </dict>
+      <dict>
+        	<key>cell</key>
+        	<string>PSSwitchCell</string>
+        	<key>default</key>
+        	<false/>
+        	<key>defaults</key>
+        	<string>com.apple.camera</string>
+        	<key>key</key>
+        	<string>CAMEnableFocusLockAttachments</string>
+        	<key>label</key>
+        	<string>Enabled</string>
+      </dict>
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Separate Exposure</string>
+        <key>footerText</key>
+        <string>Allow separate exposure and focus using user focus crop rect. The "+" button added.</string>
+      </dict>
+      <dict>
+        	<key>cell</key>
+        	<string>PSSwitchCell</string>
+        	<key>default</key>
+        	<false/>
+        	<key>defaults</key>
+        	<string>com.apple.camera</string>
+        	<key>key</key>
+        	<string>CAMEnableSeparateExposure</string>
+        	<key>label</key>
+        	<string>Enabled</string>
+      </dict>
+       <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Exposure Slider</string>
+        <key>footerText</key>
+        <string>Show or hide the default exposure bias slider.</string>
+      </dict>
+      <dict>
+        	<key>cell</key>
+        	<string>PSSwitchCell</string>
+        	<key>default</key>
+        	<true/>
+        	<key>defaults</key>
+        	<string>com.apple.camera</string>
+        	<key>key</key>
+        	<string>CAMExposureBiasSlider</string>
+        	<key>label</key>
+        	<string>Enabled</string>
+      </dict>
+      <dict>
+        	<key>cell</key>
+        	<string>PSSwitchCell</string>
+        	<key>default</key>
+        	<false/>
+        	<key>defaults</key>
+        	<string>com.apple.camera</string>
+        	<key>key</key>
+        	<string>CAMExposureBiasSliderPano</string>
+        	<key>label</key>
+        	<string>Enabled in Panorama</string>
+      </dict>
+       <dict>
+        	<key>cell</key>
+        	<string>PSSwitchCell</string>
+        	<key>default</key>
+        	<false/>
+        	<key>defaults</key>
+        	<string>com.apple.camera</string>
+        	<key>key</key>
+        	<string>CAMExposureBiasSliderTimeLapse</string>
+        	<key>label</key>
+        	<string>Enabled in Time-Lapse</string>
+      </dict>
+      <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Exposure Slider Range</string>
+        <key>footerText</key>
+        <string>Set the amplitude of exposure bias min/max value. (Defaults to 4.0)</string>
+      </dict>
+      <dict>
+			<key>cell</key>
+			<string>PSSliderCell</string>
+			<key>default</key>
+			<real>4.0</real>
+			<key>defaults</key>
+			<string>com.apple.camera</string>
+			<key>key</key>
+			<string>CAMExposureBiasMax</string>
+			<key>max</key>
+			<real>10.0</real>
+			<key>min</key>
+			<real>0.1</real>
+			<key>showValue</key>
+			<true/>
+		</dict>
+       <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>label</key>
+        <string>Exposure Text</string>
+        <key>footerText</key>
+        <string>Show or hide current bias value on top of camera preview.</string>
+      </dict>
+      <dict>
+        	<key>cell</key>
+        	<string>PSSwitchCell</string>
+        	<key>default</key>
+        	<false/>
+        	<key>defaults</key>
+        	<string>com.apple.camera</string>
+        	<key>key</key>
+        	<string>CAMExposureBiasOverlay</string>
+        	<key>label</key>
+        	<string>Enabled</string>
+      </dict>
+       <dict>
+        <key>cell</key>
+        <string>PSGroupCell</string>
+        <key>footerAlignment</key>
+        <integer>1</integer>
+        <key>footerText</key>
+        <string>Restart camera app to take effects.
+        
+© 2013 - 2014 Thuchapol Unprasert
+(@PoomSmart)</string>
+      </dict>
+    </array>
+  </dict>
+</plist>

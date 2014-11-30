@@ -1,0 +1,8 @@
+Package: org.thebigboss.mybias
+Name: MyBias
+Depends: mobilesubstrate, preferenceloader, firmware (>= 8.0)
+Version: 1.0
+Architecture: iphoneos-arm
+Description: Configurations for camera focus crop rect.
+Maintainer: PoomSmart
+Author: PoomSmart
