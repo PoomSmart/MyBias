@@ -1,11 +1,6 @@
-TypeAndTalk
+MyBias
 ==========
 
-One of Apple's hidden/disabled features of Dictation.
+Configurations for camera focus crop rect.
 
-Requires iOS 7 or above.
-
-Screenshots
-==========
-
-![alt tag](https://raw.github.com/PoomSmart/TypeAndTalk/master/SS.PNG)
+Requires iOS 8.
