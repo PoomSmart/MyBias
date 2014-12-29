@@ -11,15 +11,19 @@ BOOL timeLapseOverride = NO;
 - (void)_updateForFocusCapabilities;
 @end
 
+static NSDictionary *mbDefaults()
+{
+	return [NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/com.apple.camera.plist"];
+}
+
 %hook CAMCaptureController
 
 - (BOOL)canChangeFocusOrExposure
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *key1 = @"CAMExposureBiasSliderPano";
 	NSString *key2 = @"CAMExposureBiasSliderTimeLapse";
-	BOOL allow1 = [defaults boolForKey:key1] && [self isCapturingPanorama];
-	BOOL allow2 = [defaults boolForKey:key2] && [self isCapturingTimelapse];
+	BOOL allow1 = [[mbDefaults() objectForKey:key1] boolValue] && [self isCapturingPanorama];
+	BOOL allow2 = [[mbDefaults() objectForKey:key2] boolValue] && [self isCapturingTimelapse];
 	return (allow1 || allow2) ? YES : %orig;
 }
 
@@ -34,9 +38,8 @@ BOOL timeLapseOverride = NO;
 
 - (BOOL)_canModifyExposureBias
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *key = @"CAMExposureBiasSliderTimeLapse";
-	timeLapseOverride = [defaults boolForKey:key];
+	timeLapseOverride = [[mbDefaults() objectForKey:key] boolValue];
 	BOOL orig = %orig;
 	timeLapseOverride = NO;
 	return orig;
@@ -44,12 +47,28 @@ BOOL timeLapseOverride = NO;
 
 - (BOOL)_allowExposureBiasForMode:(int)mode
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *key1 = @"CAMExposureBiasSliderPano";
 	NSString *key2 = @"CAMExposureBiasSliderTimeLapse";
-	BOOL allow1 = [defaults boolForKey:key1] && mode == 3;
-	BOOL allow2 = [defaults boolForKey:key2] && mode == 6;
+	BOOL allow1 = [[mbDefaults() objectForKey:key1] boolValue] && mode == 3;
+	BOOL allow2 = [[mbDefaults() objectForKey:key2] boolValue] && mode == 6;
 	return (allow1 || allow2) ? YES : %orig;
+}
+
+- (BOOL)_allowFocusRectPanning
+{
+	return [[mbDefaults() objectForKey:@"CAMFocusRectPanning"] boolValue] ||
+			[[mbDefaults() objectForKey:@"CAMEnableSeparateExposure"] boolValue];
+}
+
+- (BOOL)_allowExposureBiasTextView
+{
+	return [[mbDefaults() objectForKey:@"CAMExposureBiasOverlay"] boolValue];
+}
+
+- (void)_startFocus:(BOOL)arg1 andExposure:(BOOL)arg2 atPoint:(CGPoint)arg3 startFocusAnimation:(BOOL)arg4
+{
+	[self _updateForFocusCapabilities];
+	%orig;
 }
 
 %end
@@ -70,10 +89,25 @@ BOOL timeLapseOverride = NO;
 
 - (BOOL)_enableExposureBias
 {
-	NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
 	NSString *key = @"CAMExposureBiasSlider";
-	BOOL keyExist = [defaults objectForKey:key] != nil;
-	return keyExist ? [defaults boolForKey:key] : YES;
+	id val = [mbDefaults() objectForKey:key];
+	BOOL keyExist = val != nil;
+	return keyExist ? [val boolValue] : YES;
+}
+
+- (BOOL)_allowDismissFocusAttachment
+{
+	return [[mbDefaults() objectForKey:@"CAMShowDismissFocusAttachment"] boolValue];
+}
+
+- (BOOL)_allowFocusLockAttachments
+{
+	return [[mbDefaults() objectForKey:@"CAMEnableFocusLockAttachments"] boolValue];
+}
+
+- (BOOL)_allowSplitFocusAndExposure
+{
+	return [[mbDefaults() objectForKey:@"CAMEnableSeparateExposure"] boolValue];
 }
 
 %end
