@@ -7,20 +7,20 @@ static NSDictionary *mbDefaults()
 	return [NSDictionary dictionaryWithContentsOfFile:@"/var/mobile/Library/Preferences/com.apple.camera.plist"];
 }
 
-%hook CaptureController
+%group iOS8
+
+%hook CAMCaptureController
 
 - (BOOL)canChangeFocusOrExposure
 {
-	NSString *key1 = @"CAMExposureBiasSliderPano";
-	NSString *key2 = @"CAMExposureBiasSliderTimeLapse";
-	BOOL allow1 = [mbDefaults()[key1] boolValue] && [self isCapturingPanorama];
-	BOOL allow2 = [mbDefaults()[key2] boolValue] && [self isCapturingTimelapse];
+	BOOL allow1 = [mbDefaults()[@"CAMExposureBiasSliderPano"] boolValue] && [self isCapturingPanorama];
+	BOOL allow2 = [mbDefaults()[@"CAMExposureBiasSliderTimeLapse"] boolValue] && [self isCapturingTimelapse];
 	return (allow1 || allow2) ? YES : %orig;
 }
 
 %end
 
-%hook CameraView
+%hook CAMCameraView
 
 - (BOOL)_isCapturingTimelapse
 {
@@ -29,26 +29,22 @@ static NSDictionary *mbDefaults()
 
 - (BOOL)_canModifyExposureBias
 {
-	NSString *key = @"CAMExposureBiasSliderTimeLapse";
-	timeLapseOverride = [mbDefaults()[key] boolValue];
+	timeLapseOverride = [mbDefaults()[@"CAMExposureBiasSliderTimeLapse"] boolValue];
 	BOOL orig = %orig;
 	timeLapseOverride = NO;
 	return orig;
 }
 
-- (BOOL)_allowExposureBiasForMode:(NSInteger)mode
+- (BOOL)_allowExposureBiasForMode:(int)mode
 {
-	NSString *key1 = @"CAMExposureBiasSliderPano";
-	NSString *key2 = @"CAMExposureBiasSliderTimeLapse";
-	BOOL allow1 = [mbDefaults()[key1] boolValue] && mode == 3;
-	BOOL allow2 = [mbDefaults()[key2] boolValue] && mode == 6;
+	BOOL allow1 = [mbDefaults()[@"CAMExposureBiasSliderPano"] boolValue] && mode == 3;
+	BOOL allow2 = [mbDefaults()[@"CAMExposureBiasSliderTimeLapse"] boolValue] && mode == 6;
 	return (allow1 || allow2) ? YES : %orig;
 }
 
 - (BOOL)_allowFocusRectPanning
 {
-	return [mbDefaults()[@"CAMFocusRectPanning"] boolValue] ||
-			[mbDefaults()[@"CAMEnableSeparateExposure"] boolValue];
+	return [mbDefaults()[@"CAMFocusRectPanning"] boolValue] || [mbDefaults()[@"CAMEnableSeparateExposure"] boolValue];
 }
 
 - (BOOL)_allowExposureBiasTextView
@@ -64,7 +60,7 @@ static NSDictionary *mbDefaults()
 
 %end
 
-%hook ApplicationViewController
+%hook CAMApplicationViewController
 
 - (void)loadView
 {
@@ -76,12 +72,11 @@ static NSDictionary *mbDefaults()
 
 %end
 
-%hook PreviewView
+%hook CAMPreviewView
 
 - (BOOL)_enableExposureBias
 {
-	NSString *key = @"CAMExposureBiasSlider";
-	id val = mbDefaults()[key];
+	id val = mbDefaults()[@"CAMExposureBiasSlider"];
 	BOOL keyExist = val != nil;
 	return keyExist ? [val boolValue] : YES;
 }
@@ -103,11 +98,41 @@ static NSDictionary *mbDefaults()
 
 %end
 
+%end
+
+%group iOS9
+
+%hook CAMViewfinderViewController
+
+- (BOOL)_isCapturingTimelapse
+{
+	return timeLapseOverride ? NO : %orig;
+}
+
+%end
+
+%hook CAMPreviewViewController
+
+- (BOOL)_canModifyExposureBias
+{
+	timeLapseOverride = [mbDefaults()[@"CAMExposureBiasSliderTimeLapse"] boolValue];
+	BOOL orig = %orig;
+	timeLapseOverride = NO;
+	return orig;
+}
+
+- (BOOL)_allowExposureBiasForMode:(int)mode
+{
+	BOOL allow1 = [mbDefaults()[@"CAMExposureBiasSliderPano"] boolValue] && mode == 3;
+	BOOL allow2 = [mbDefaults()[@"CAMExposureBiasSliderTimeLapse"] boolValue] && mode == 6;
+	return (allow1 || allow2) ? YES : %orig;
+}
+
+%end
+
+%end
+
 %ctor
 {
-	BOOL iOS9 = isiOS9Up;
-	%init(CaptureController = iOS9 ? objc_getClass("CMKCaptureController") : objc_getClass("CAMCaptureController"),
-			CameraView = iOS9 ? objc_getClass("CMKCameraView") : objc_getClass("CAMCameraView"),
-			ApplicationViewController = iOS9 ? objc_getClass("CMKApplicationViewController") : objc_getClass("CAMApplicationViewController"),
-			PreviewView = iOS9 ? objc_getClass("CMKPreviewView") : objc_getClass("CAMPreviewView"));
+	%init;
 }
